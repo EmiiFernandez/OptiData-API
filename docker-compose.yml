@@ -1,0 +1,22 @@
+# Base de datos MySQL para desarrollo local.
+# Uso: copiar .env.template a .env y ejecutar `docker compose up -d`
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: optidata-mysql
+    environment:
+      MYSQL_DATABASE: ${DATABASE_DB:-optidata}
+      MYSQL_USER: ${USER_DB:-optidata}
+      MYSQL_PASSWORD: ${PASSWORD_DB:-optidata}
+      MYSQL_ROOT_PASSWORD: ${PASSWORD_DB:-optidata}
+    ports:
+      - "3306:3306"
+    volumes:
+      - optidata-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  optidata-data:
